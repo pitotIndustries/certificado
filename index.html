@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>Certificados | PITOT INDUSTRIES EIRL</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #000;
+      --panel: #101010;
+      --white: #fff;
+      --muted: #c4c4c4;
+      --red: #e5232e;
+      --line: #333;
+    }
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--white);
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 16px;
+      text-align: center;
+    }
+    .page {
+      width: 100%;
+      max-width: 520px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-size: clamp(28px, 7vw, 38px);
+      line-height: 1.15;
+      margin: 0 0 14px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+    .intro {
+      margin: 0 0 30px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 440px;
+    }
+    .form-card {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 24px 20px;
+      background: var(--panel);
+    }
+    label {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+      margin: 0 0 12px;
+    }
+    input {
+      width: 100%;
+      min-height: 52px;
+      padding: 13px 14px;
+      border: 1px solid #555;
+      border-radius: 9px;
+      outline: none;
+      background: #050505;
+      color: #fff;
+      font-size: 18px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+    input:focus { border-color: var(--red); box-shadow: 0 0 0 2px #e5232e33; }
+    button {
+      width: 100%;
+      min-height: 50px;
+      margin-top: 16px;
+      border: 0;
+      border-radius: 9px;
+      padding: 13px 16px;
+      background: var(--red);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .65; cursor: wait; }
+    #mensaje {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+    #resultado {
+      width: 100%;
+      margin-top: 18px;
+      text-align: left;
+    }
+    .certificate {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      background: #090909;
+    }
+    .certificate h2 {
+      margin: 0 0 16px;
+      text-align: center;
+      font-size: 20px;
+    }
+    .field {
+      padding: 11px 0;
+      border-bottom: 1px solid #292929;
+      overflow-wrap: anywhere;
+      line-height: 1.5;
+    }
+    .field:last-child { border-bottom: 0; }
+    .field strong { display: block; color: #aaa; font-size: 12px; text-transform: uppercase; letter-spacing: .7px; margin-bottom: 4px; }
+    .status { text-align: center; font-weight: 800; margin: 15px 0 0; }
+    .valid { color: #48d597; }
+    .expired { color: #ff626b; }
+    .brand {
+      margin-top: 34px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo {
+      width: 92px;
+      height: 92px;
+      border: 2px solid var(--red);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      position: relative;
+    }
+    .logo::after {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border: 1px solid #777;
+      border-radius: 50%;
+    }
+    .brand-name { font-size: 14px; color: #ddd; margin: 0; }
+    .brand-name strong { color: #fff; }
+    .divider { width: 100%; height: 1px; background: #292929; margin-top: 28px; }
+    .footer { color: #777; font-size: 12px; margin: 14px 0 0; }
+    @media (max-width: 380px) {
+      body { padding: 20px 12px; }
+      .form-card { padding: 21px 15px; }
+      .intro { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h1>CERTIFICADOS</h1>
+    <p class="intro">Lista pública de la base de datos de los certificados emitidos por PITOT INDUSTRIES EIRL.</p>
+
+    <section class="form-card" aria-label="Consultar certificado">
+      <form id="formulario">
+        <label for="codigo">Código del Certificado</label>
+        <input id="codigo" name="codigo" type="text" value="AH6A6A"
+               maxlength="20" autocomplete="off" autocapitalize="characters"
+               spellcheck="false" required>
+        <button id="consultar" type="submit">Consultar certificado</button>
+      </form>
+      <p id="mensaje" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="resultado" aria-live="polite"></section>
+
+    <div class="brand">
+      <!-- Reemplaza este logo provisional por el logo oficial cuando lo tengas. -->
+      <div class="logo" role="img" aria-label="Logo provisional PITOT">PITOT</div>
+      <p class="brand-name">Una app de <strong>PITOT INDUSTRIES EIRL</strong></p>
+    </div>
+
+    <div class="divider"></div>
+    <p class="footer">Consulta pública de certificados</p>
+  </main>
+
+  <script>
+    // Configura aquí la clave API web de tu proyecto Firebase.
+    const API_KEY = "AIzaSyDXwzFrzcXBetNOWq71ITagVgwbD7SM6MY";
+    const PROJECT_ID = "gd2026-45477";
+    const COLLECTION = "Certificados";
+
+    const formulario = document.getElementById("formulario");
+    const campoCodigo = document.getElementById("codigo");
+    const boton = document.getElementById("consultar");
+    const mensaje = document.getElementById("mensaje");
+    const resultado = document.getElementById("resultado");
+
+    function obtenerCampo(fields, nombre) {
+      const dato = fields && fields[nombre];
+      if (!dato) return "";
+      if (dato.stringValue !== undefined) return dato.stringValue;
+      if (dato.integerValue !== undefined) return String(dato.integerValue);
+      if (dato.doubleValue !== undefined) return String(dato.doubleValue);
+      if (dato.booleanValue !== undefined) return String(dato.booleanValue);
+      return "";
+    }
+
+    function fechaEstado(fecha) {
+      // La fecha de vencimiento se guarda como yy-MM-dd, por ejemplo 26-10-20.
+      const m = /^(\d{2})-(\d{2})-(\d{2})$/.exec(fecha || "");
+      if (!m) return null;
+      const year = 2000 + Number(m[1]);
+      const month = Number(m[2]) - 1;
+      const day = Number(m[3]);
+      const date = new Date(year, month, day);
+      if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) return null;
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+      date.setHours(0, 0, 0, 0);
+      return date >= hoy ? "VIGENTE" : "VENCIDO";
+    }
+
+    function agregarCampo(contenedor, etiqueta, valor) {
+      const div = document.createElement("div");
+      div.className = "field";
+      const strong = document.createElement("strong");
+      strong.textContent = etiqueta;
+      const span = document.createElement("span");
+      span.textContent = valor || "No especificado";
+      div.append(strong, span);
+      contenedor.appendChild(div);
+    }
+
+    function mostrarCertificado(fields, codigoBuscado) {
+      resultado.replaceChildren();
+      const tarjeta = document.createElement("article");
+      tarjeta.className = "certificate";
+      const titulo = document.createElement("h2");
+      titulo.textContent = "Detalle del certificado";
+      tarjeta.appendChild(titulo);
+
+      const codigo = obtenerCampo(fields, "codigo") || codigoBuscado;
+      const cliente = obtenerCampo(fields, "cliente");
+      const direccion = obtenerCampo(fields, "direccion");
+      const detalles = obtenerCampo(fields, "detalles");
+      const emision = obtenerCampo(fields, "fechaEmision");
+      const vencimiento = obtenerCampo(fields, "fechaVencimiento");
+      const estado = fechaEstado(vencimiento);
+
+      agregarCampo(tarjeta, "Código del certificado", codigo);
+      agregarCampo(tarjeta, "Cliente", cliente);
+      agregarCampo(tarjeta, "Dirección", direccion);
+      agregarCampo(tarjeta, "Detalles", detalles);
+      agregarCampo(tarjeta, "Fecha de certificación", emision);
+      agregarCampo(tarjeta, "Fecha de vencimiento", vencimiento);
+
+      if (estado) {
+        const p = document.createElement("p");
+        p.className = "status " + (estado === "VIGENTE" ? "valid" : "expired");
+        p.textContent = "ESTADO: " + estado;
+        tarjeta.appendChild(p);
+      }
+      resultado.appendChild(tarjeta);
+    }
+
+    async function consultarCertificado(codigo) {
+      mensaje.textContent = "";
+      resultado.replaceChildren();
+
+      if (!codigo) {
+        mensaje.textContent = "Ingresa el código del certificado.";
+        return;
+      }
+      if (API_KEY === "PEGA_AQUI_TU_API_KEY_WEB") {
+        mensaje.textContent = "Falta configurar la API key web de Firebase en el archivo index.html.";
+        return;
+      }
+
+      boton.disabled = true;
+      boton.textContent = "Consultando...";
+      mensaje.textContent = "Buscando certificado...";
+
+      try {
+        const url = "https://firestore.googleapis.com/v1/projects/" +
+          encodeURIComponent(PROJECT_ID) + "/databases/(default)/documents/" +
+          encodeURIComponent(COLLECTION) + "/" + encodeURIComponent(codigo) +
+          "?key=" + encodeURIComponent(API_KEY);
+        const respuesta = await fetch(url);
+        const datos = await respuesta.json();
+
+        if (respuesta.status === 404) {
+          mensaje.textContent = "No se encontró un certificado con ese código.";
+          return;
+        }
+        if (!respuesta.ok) {
+          console.error("Error de Firestore:", datos);
+          mensaje.textContent = respuesta.status === 403
+            ? "No se pudo consultar. Verifica las reglas de acceso de Firestore."
+            : "No se pudo consultar el certificado. Inténtalo nuevamente.";
+          return;
+        }
+
+        mostrarCertificado(datos.fields || {}, codigo);
+        mensaje.textContent = "";
+      } catch (error) {
+        console.error(error);
+        mensaje.textContent = "No se pudo conectar. Revisa tu conexión a internet e inténtalo otra vez.";
+      } finally {
+        boton.disabled = false;
+        boton.textContent = "Consultar certificado";
+      }
+    }
+
+    formulario.addEventListener("submit", function(event) {
+      event.preventDefault();
+      consultarCertificado(campoCodigo.value.trim().toUpperCase());
+    });
+
+    campoCodigo.addEventListener("input", function() {
+      const inicio = campoCodigo.selectionStart;
+      const fin = campoCodigo.selectionEnd;
+      campoCodigo.value = campoCodigo.value.toUpperCase();
+      try { campoCodigo.setSelectionRange(inicio, fin); } catch (_) {}
+    });
+
+    const parametros = new URLSearchParams(window.location.search);
+    const codigoURL = parametros.get("codigo");
+    if (codigoURL) {
+      campoCodigo.value = codigoURL.trim().toUpperCase();
+      consultarCertificado(campoCodigo.value);
+    }
+  </script>
+</body>
+</html>

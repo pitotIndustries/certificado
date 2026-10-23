@@ -51,6 +51,7 @@
 }
 
     .logo-oe {
+  display: block;
   width: 64px;
   height: 64px;
   flex: 0 0 64px;
@@ -58,33 +59,30 @@
 }
 
     .encabezado-texto {
-      flex: 1;
-      min-width: 0;
-      padding: 0;
-      border: none;
-      border-radius: 0;
-      background: transparent;
-    }
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
 
     .encabezado h1 {
-      font-size: clamp(17px, 4.5vw, 25px);
-      line-height: 1.2;
-      margin: 0 0 7px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      text-align: left;
-      overflow-wrap: anywhere;
-    }
+  margin: 0 0 5px;
+  font-size: clamp(16px, 4.5vw, 25px);
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
 
     .encabezado h2 {
-      margin: 0;
-      text-align: left;
-      font-size: 13px;
-      line-height: 1.4;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      color: var(--muted);
-    }
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--muted);
+  text-align: left;
+}
 
     .intro {
   width: 100%;
@@ -265,7 +263,16 @@
         flex-basis: 62px;
       }
 
-      .encabezado { gap: 9px; }
+.encabezado {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  margin: 0;
+  text-align: left;
+}
 
       .encabezado h1 {
         font-size: 17px;

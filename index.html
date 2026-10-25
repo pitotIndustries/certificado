@@ -434,6 +434,10 @@
       const cliente = obtenerCampo(fields, "cliente");
       const direccion = obtenerCampo(fields, "direccion");
       const detalles = obtenerCampo(fields, "detalles");
+
+      // NUEVO CAMPO: responsable del certificado
+      const responsable = obtenerCampo(fields, "responsable");
+
       const emision = obtenerCampo(fields, "fechaEmision");
       const vencimiento = obtenerCampo(fields, "fechaVencimiento");
       const estado = fechaEstado(vencimiento);
@@ -442,6 +446,14 @@
       agregarCampo(tarjeta, "Cliente", cliente);
       agregarCampo(tarjeta, "Dirección", direccion);
       agregarCampo(tarjeta, "Detalles", detalles);
+
+      // NUEVO CAMPO DEBAJO DE DETALLES
+      agregarCampo(
+        tarjeta,
+        "Ingeniero Electricista - Mecánico Electricista responsable",
+        responsable
+      );
+
       agregarCampo(tarjeta, "Fecha de certificación", emision);
       
       if (estado) {

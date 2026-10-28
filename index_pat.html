@@ -448,7 +448,9 @@
       const cliente = obtenerCampo(fields, "cliente");
       const direccion = obtenerCampo(fields, "direccion");
       const detalles = obtenerCampo(fields, "detalles");
-
+      const lugar = obtenerCampo(fields, "lugar");
+      const ohmios = obtenerCampo(fields, "ohmios");
+      
       // NUEVO CAMPO: responsable del certificado
       const responsable = obtenerCampo(fields, "responsable");
 
@@ -460,7 +462,9 @@
       agregarCampo(tarjeta, "Cliente", cliente);
       agregarCampo(tarjeta, "Dirección", direccion);
       agregarCampo(tarjeta, "Detalles", detalles);
-
+      agregarCampo(tarjeta, "Lugar", lugar);
+      agregarCampo(tarjeta, "Ohmios", ohmios);
+      
       // NUEVO CAMPO DEBAJO DE DETALLES
       agregarCampo(
         tarjeta,

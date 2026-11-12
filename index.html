@@ -7,6 +7,13 @@
 
   <title>PITOT INDUSTRIES EIRL</title>
 
+  <!-- GOATCOUNTER -->
+  <script
+    data-goatcounter="https://pitotindustries.goatcounter.com/count"
+    async
+    src="https://gc.zgo.at/count.js">
+  </script>
+
   <style>
     :root {
       color-scheme: dark;
@@ -192,6 +199,7 @@
     }
 
     /* CONTADOR DE VISITAS */
+
     .visitas {
       display: flex;
       flex-direction: column;
@@ -205,6 +213,7 @@
     #contador-visitas {
       display: flex;
       justify-content: center;
+      align-items: center;
       width: 100%;
       min-height: 24px;
     }
@@ -296,10 +305,13 @@
 
     <!-- VISITAS TOTALES -->
     <div class="visitas">
+
       <span>VISITAS A PITOT INDUSTRIES</span>
+
       <div id="contador-visitas">
         Cargando visitas...
       </div>
+
     </div>
 
     <p class="footer">
@@ -354,61 +366,42 @@
     actualizarContadores();
   </script>
 
-  <!-- GOATCOUNTER: REGISTRO DE VISITAS -->
-  <script
-    data-goatcounter="<script data-goatcounter="https://pitotindustries.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>"
-    async
-    src="https://gc.zgo.at/count.js">
-  </script>
-
   <!-- MOSTRAR VISITAS ACUMULADAS -->
   <script>
     (function esperarContador() {
+
       let intentos = 0;
 
       const intervalo = setInterval(function() {
+
         intentos++;
 
         if (
           window.goatcounter &&
           window.goatcounter.visit_count
         ) {
+
           clearInterval(intervalo);
 
           window.goatcounter.visit_count({
             append: "#contador-visitas",
-            path: "TOTAL",
-            style: `
-              div {
-                border: 0;
-                background: transparent;
-                color: #c4c4c4;
-                font: 12px Arial, sans-serif;
-                padding: 0;
-              }
-              #gcvc-for {
-                color: #c4c4c4;
-              }
-              #gcvc-views {
-                color: #ffffff;
-                font-weight: bold;
-              }
-              #gcvc-by {
-                color: #777777;
-              }
-            `
+            path: "TOTAL"
           });
+
         }
 
         if (intentos >= 100) {
+
           clearInterval(intervalo);
+
           document.getElementById(
             "contador-visitas"
           ).textContent = "Visitas no disponibles";
+
         }
 
       }, 100);
+
     })();
   </script>
 

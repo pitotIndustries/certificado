@@ -308,7 +308,7 @@
     </p>
 
 <!-- VISITAS TOTALES -->
-    <div class="persona(s) ingresaron a esta pagina web">
+    <div class="visitas">
       
       <div id="contador-visitas">
         Cargando ...
@@ -380,8 +380,12 @@ async function cargarVisitas() {
 
     const datos = await respuesta.json();
 
-    contador.textContent =
-      Number(datos.count).toLocaleString("es-PE") + " visitas";
+    const total = Number(datos.count);
+
+contador.textContent =
+  String(total).padStart(2, "0") +
+  (total === 1 ? " persona" : " personas") +
+  " ingresaron a esta página web";
 
   } catch (error) {
     contador.textContent = "Visitas no disponibles";

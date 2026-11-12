@@ -367,43 +367,32 @@
   </script>
 
   <!-- MOSTRAR VISITAS ACUMULADAS -->
-  <script>
-    (function esperarContador() {
+<script>
+async function cargarVisitas() {
+  const contador = document.getElementById("contador-visitas");
 
-      let intentos = 0;
+  try {
+    const respuesta = await fetch(
+      "https://pitotindustries.goatcounter.com/counter/TOTAL.json"
+    );
 
-      const intervalo = setInterval(function() {
+    if (!respuesta.ok) {
+      throw new Error("HTTP " + respuesta.status);
+    }
 
-        intentos++;
+    const datos = await respuesta.json();
 
-        if (
-          window.goatcounter &&
-          window.goatcounter.visit_count
-        ) {
+    contador.textContent =
+      Number(datos.count).toLocaleString("es-PE") + " visitas";
 
-          clearInterval(intervalo);
+  } catch (error) {
+    contador.textContent = "Visitas no disponibles";
+    console.error("Error GoatCounter:", error);
+  }
+}
 
-          window.goatcounter.visit_count({
-            append: "#contador-visitas",
-            path: "TOTAL"
-          });
-
-        }
-
-        if (intentos >= 100) {
-
-          clearInterval(intervalo);
-
-          document.getElementById(
-            "contador-visitas"
-          ).textContent = "Visitas no disponibles";
-
-        }
-
-      }, 100);
-
-    })();
-  </script>
+cargarVisitas();
+</script>
 
 </body>
 </html>

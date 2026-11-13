@@ -364,33 +364,64 @@
     actualizarContadores();
   </script>
 
-  <!-- MOSTRAR VISITAS ACUMULADAS -->
+<!-- MOSTRAR VISITAS ACUMULADAS -->
 <script>
-async function cargarVisitas() {
+function cargarVisitas() {
   const contador = document.getElementById("contador-visitas");
 
-  try {
-    const respuesta = await fetch(
-      "https://pitotindustries.goatcounter.com/counter/TOTAL.json"
-    );
+  const xhr = new XMLHttpRequest();
 
-    if (!respuesta.ok) {
-      throw new Error("HTTP " + respuesta.status);
+  xhr.open(
+    "GET",
+    "https://pitotindustries.goatcounter.com/counter/TOTAL.json",
+    true
+  );
+
+  xhr.timeout = 15000;
+
+  xhr.onload = function() {
+    try {
+      if (xhr.status !== 200) {
+        throw new Error("HTTP " + xhr.status);
+      }
+
+      const datos = JSON.parse(xhr.responseText);
+
+      if (datos.count === undefined) {
+        throw new Error("Respuesta sin contador");
+      }
+
+      const total = parseInt(
+        String(datos.count).replace(/,/g, ""),
+        10
+      );
+
+      if (!Number.isFinite(total)) {
+        throw new Error("Contador inválido");
+      }
+
+      contador.textContent =
+        String(total).padStart(2, "0") +
+        (total === 1 ? " persona ingresó" : " personas ingresaron") +
+        " a esta página web";
+
+    } catch (error) {
+      contador.textContent = "Visitas no disponibles";
+      console.error("Error GoatCounter:", error);
     }
+  };
 
-    const datos = await respuesta.json();
-
-    const total = Number(datos.count);
-
-contador.textContent =
-  String(total).padStart(2, "0") +
-  (total === 1 ? " persona" : " personas") +
-  " ingresaron a esta página web";
-
-  } catch (error) {
+  xhr.onerror = function() {
     contador.textContent = "Visitas no disponibles";
-    console.error("Error GoatCounter:", error);
-  }
+    console.error("Error de conexión con GoatCounter");
+  };
+
+  xhr.ontimeout = function() {
+    contador.textContent = "Visitas no disponibles";
+    console.error("Tiempo de espera agotado");
+  };
+
+  xhr.send();
 }
 
 cargarVisitas();

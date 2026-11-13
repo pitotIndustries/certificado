@@ -427,5 +427,37 @@ function cargarVisitas() {
 cargarVisitas();
 </script>
 
+<script>
+(function() {
+  function iniciarContador() {
+    if (
+      !window.goatcounter ||
+      !window.goatcounter.visit_count
+    ) {
+      setTimeout(iniciarContador, 100);
+      return;
+    }
+
+    window.goatcounter.visit_count({
+      append: "#contador-visitas",
+      path: "TOTAL",
+      no_branding: true,
+      style: `
+        div {
+          background: transparent;
+          border: none;
+          color: #c4c4c4;
+          font-family: Arial, sans-serif;
+          font-size: 10px;
+          text-align: center;
+        }
+      `
+    });
+  }
+
+  iniciarContador();
+})();
+</script>
+  
 </body>
 </html>

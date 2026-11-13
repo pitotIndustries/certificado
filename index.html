@@ -381,7 +381,7 @@
         }
 
         const datos = await respuesta.json();
-
+        
         if (datos.count === undefined) {
           throw new Error("No se encontró el total de visitas");
         }

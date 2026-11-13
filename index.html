@@ -7,7 +7,7 @@
 
   <title>PITOT INDUSTRIES EIRL</title>
 
-  <!-- GOATCOUNTER -->
+  <!-- GOATCOUNTER: REGISTRO DE VISITAS -->
   <script
     data-goatcounter="https://pitotindustries.goatcounter.com/count"
     async
@@ -305,20 +305,17 @@
     <p class="footer">
       2026 Grupo Pitot © Todos los derechos reservados. ®
     </p>
-    
-<!-- VISITAS TOTALES GOATCOUNTER -->
 
-<!-- VISITAS TOTALES -->
-<div class="visitas">
-  <div id="contador-visitas">
-    Cargando visitas...
-  </div>
-</div>
+    <!-- VISITAS TOTALES DE TODO EL SITIO -->
+    <div class="visitas">
+      <div id="contador-visitas">
+        Cargando visitas...
+      </div>
+    </div>
 
-    
   </main>
 
-  <!-- CONTADOR DE CERTIFICADOS FIRESTORE -->
+  <!-- CONTADORES DE CERTIFICADOS FIRESTORE -->
   <script>
     async function actualizarContadores() {
       const pat = document.getElementById("contador-pat");
@@ -364,100 +361,58 @@
     actualizarContadores();
   </script>
 
-<!-- MOSTRAR VISITAS ACUMULADAS -->
-<script>
-function cargarVisitas() {
-  const contador = document.getElementById("contador-visitas");
+  <!-- CONSULTA DEL TOTAL DE VISITAS EN GOATCOUNTER -->
+  <script>
+    async function cargarVisitas() {
+      const contador =
+        document.getElementById("contador-visitas");
 
-  const xhr = new XMLHttpRequest();
+      try {
+        const respuesta = await fetch(
+          "https://pitotindustries.goatcounter.com/counter/TOTAL.json?_=" +
+          Date.now(),
+          {
+            cache: "no-store"
+          }
+        );
 
-  xhr.open(
-    "GET",
-    "https://pitotindustries.goatcounter.com/counter/TOTAL.json",
-    true
-  );
-
-  xhr.timeout = 15000;
-
-  xhr.onload = function() {
-    try {
-      if (xhr.status !== 200) {
-        throw new Error("HTTP " + xhr.status);
-      }
-
-      const datos = JSON.parse(xhr.responseText);
-
-      if (datos.count === undefined) {
-        throw new Error("Respuesta sin contador");
-      }
-
-      const total = parseInt(
-        String(datos.count).replace(/,/g, ""),
-        10
-      );
-
-      if (!Number.isFinite(total)) {
-        throw new Error("Contador inválido");
-      }
-
-      contador.textContent =
-        String(total).padStart(2, "0") +
-        (total === 1 ? " persona ingresó" : " personas ingresaron") +
-        " a esta página web";
-
-    } catch (error) {
-      contador.textContent = "Visitas no disponibles";
-      console.error("Error GoatCounter:", error);
-    }
-  };
-
-  xhr.onerror = function() {
-    contador.textContent = "Visitas no disponibles";
-    console.error("Error de conexión con GoatCounter");
-  };
-
-  xhr.ontimeout = function() {
-    contador.textContent = "Visitas no disponibles";
-    console.error("Tiempo de espera agotado");
-  };
-
-  xhr.send();
-}
-
-cargarVisitas();
-</script>
-
-<script>
-(function() {
-  function iniciarContador() {
-    if (
-      !window.goatcounter ||
-      !window.goatcounter.visit_count
-    ) {
-      setTimeout(iniciarContador, 100);
-      return;
-    }
-
-    window.goatcounter.visit_count({
-      append: "#contador-visitas",
-      path: "TOTAL",
-      no_branding: true,
-      style: `
-        div {
-          background: transparent;
-          border: none;
-          color: #c4c4c4;
-          font-family: Arial, sans-serif;
-          font-size: 10px;
-          text-align: center;
+        if (!respuesta.ok) {
+          throw new Error("HTTP " + respuesta.status);
         }
-      `
-    });
-  }
 
-  iniciarContador();
-})();
-</script>
-  
+        const datos = await respuesta.json();
+
+        if (datos.count === undefined) {
+          throw new Error("No se encontró el total de visitas");
+        }
+
+        const total = parseInt(
+          String(datos.count).replace(/,/g, ""),
+          10
+        );
+
+        if (!Number.isFinite(total)) {
+          throw new Error("Número de visitas inválido");
+        }
+
+        contador.textContent =
+          String(total).padStart(2, "0") +
+          (total === 1
+            ? " persona ingresó"
+            : " personas ingresaron") +
+          " a esta página web";
+
+      } catch (error) {
+        contador.textContent = "Visitas no disponibles";
+        console.error("Error GoatCounter:", error);
+      }
+    }
+
+    cargarVisitas();
+
+    // Actualizar consulta cada 60 segundos
+    setInterval(cargarVisitas, 60000);
+  </script>
+
 </body>
 </html>

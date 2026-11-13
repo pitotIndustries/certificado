@@ -403,7 +403,13 @@
           " a esta página web";
 
       } catch (error) {
-        contador.textContent = "Visitas no disponibles";
+        contador.textContent =
+          String(total).padStart(2, "0") +
+          (total === 1
+            ? " persona ingresó"
+            : " personas ingresaron") +
+          " a esta página web";
+        
         console.error("Error GoatCounter:", error);
       }
     }
